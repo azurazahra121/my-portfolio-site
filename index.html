@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Azura Zahra — AI Operations Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;1,300&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ── TOKENS ── */
+    :root {
+      --cream:      #F8F5EC;
+      --sage:       #D4E0A8;
+      --tan:        #B8864E;
+      --brown:      #6B3A2A;
+      --olive:      #4A5230;
+      --text:       #2A2218;
+      --muted:      #7A6F5E;
+      --border:     #DDD5C0;
+      --white:      #FFFDF7;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--cream);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      background: var(--cream);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+    }
+
+    .nav-name {
+      font-family: 'Fraunces', serif;
+      font-size: 16px;
+      font-weight: 300;
+      color: var(--brown);
+      letter-spacing: 0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--tan); }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 60px 24px 48px;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--olive);
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(38px, 8vw, 58px);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--brown);
+      margin-bottom: 20px;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--tan);
+    }
+
+    .hero-bio {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 32px;
+      line-height: 1.7;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--tan);
+      color: var(--white);
+      padding: 12px 24px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      transition: background 0.2s;
+    }
+
+    .btn-primary:hover { background: var(--brown); }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--tan);
+      padding: 12px 24px;
+      border-radius: 6px;
+      border: 1px solid var(--tan);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover { background: var(--tan); color: var(--white); }
+
+    /* ── BUILD LOG TICKER (Signature Element) ── */
+    .build-log {
+      background: var(--brown);
+      overflow: hidden;
+      padding: 12px 0;
+      margin: 0;
+    }
+
+    .build-log-inner {
+      display: flex;
+      gap: 40px;
+      animation: ticker 28s linear infinite;
+      white-space: nowrap;
+      width: max-content;
+    }
+
+    .build-log-inner:hover { animation-play-state: paused; }
+
+    @keyframes ticker {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .ticker-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Inter', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--sage);
+      text-transform: uppercase;
+    }
+
+    .ticker-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--sage);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 56px 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--olive);
+      margin-bottom: 28px;
+    }
+
+    /* ── ABOUT ── */
+    .about-text {
+      font-size: 16px;
+      color: var(--text);
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .about-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 24px;
+    }
+
+    .tag {
+      background: var(--white);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    /* ── PROJECTS ── */
+    .projects-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .project-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 22px 24px;
+      text-decoration: none;
+      display: block;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .project-card:hover {
+      border-color: var(--tan);
+      transform: translateY(-2px);
+    }
+
+    .project-name {
+      font-family: 'Fraunces', serif;
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--brown);
+      margin-bottom: 6px;
+    }
+
+    .project-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+
+    .project-meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .project-tag {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--tan);
+      background: #F5EDE2;
+      padding: 3px 8px;
+      border-radius: 3px;
+    }
+
+    /* ── ARTICLES ── */
+    #articles-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .article-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 22px;
+      text-decoration: none;
+      display: block;
+      transition: border-color 0.2s;
+    }
+
+    .article-card:hover { border-color: var(--tan); }
+
+    .article-title {
+      font-family: 'Fraunces', serif;
+      font-size: 17px;
+      font-weight: 400;
+      color: var(--brown);
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+
+    .article-date {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    .articles-loading {
+      color: var(--muted);
+      font-size: 13px;
+      font-style: italic;
+    }
+
+    /* ── CONTACT ── */
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 20px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      text-decoration: none;
+      transition: border-color 0.2s;
+    }
+
+    .contact-link:hover { border-color: var(--tan); }
+
+    .contact-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--olive);
+      width: 80px;
+      flex-shrink: 0;
+    }
+
+    .contact-value {
+      font-size: 14px;
+      color: var(--tan);
+      font-weight: 500;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 32px 24px;
+      border-top: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 480px) {
+      nav { padding: 12px 16px; }
+      .nav-links { gap: 14px; }
+      .hero { padding: 40px 16px 36px; }
+      section { padding: 44px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <span class="nav-name">Azura Zahra</span>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#articles">Writing</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <p class="hero-eyebrow">AI Operations Builder — Indonesia</p>
+    <h1>Building systems<br>that <em>actually work.</em></h1>
+
+    <!-- EDIT THIS: your one-line bio -->
+    <p class="hero-bio">
+      I design and deploy AI-powered tools and automation systems — entirely from my phone. Self-taught, COO-track, mobile-first.
+    </p>
+
+    <div class="hero-cta">
+      <a href="#projects" class="btn-primary">See my work</a>
+      <!-- EDIT THIS: your Fiverr gig URL -->
+      <a href="https://www.fiverr.com/azurazahra121" target="_blank" class="btn-secondary">Hire me on Fiverr</a>
+    </div>
+  </div>
+
+  <!-- BUILD LOG TICKER -->
+  <div class="build-log" aria-hidden="true">
+    <div class="build-log-inner">
+      <!-- First set -->
+      <span class="ticker-item"><span class="ticker-dot"></span>VelocityIQ — Live</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>Priority Target Breakdown — Live</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>Interview Coach — Live</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>Booking Tool — Live</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>TSMC Analysis — Published</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>Fiverr Gig — Active</span>
+      <!-- Duplicate for seamless loop -->
+      <span class="ticker-item"><span class="ticker-dot"></span>VelocityIQ — Live</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>Priority Target Breakdown — Live</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>Interview Coach — Live</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>Booking Tool — Live</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>TSMC Analysis — Published</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>Fiverr Gig — Active</span>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <p class="section-label">About</p>
+
+    <!-- EDIT THIS: your about paragraph -->
+    <p class="about-text">
+      I'm Azura — a self-taught AI operations builder based in Indonesia. I build custom web tools, dashboards, and automation systems designed to solve real operational problems. Everything I've shipped has been built entirely on Android using React, Netlify serverless functions, and Notion as a backend.
+    </p>
+
+    <!-- EDIT THIS: your about paragraph 2 -->
+    <p class="about-text">
+      My track is technology operations leadership. I'm building the portfolio and technical foundation now, one deployed tool at a time.
+    </p>
+
+    <div class="about-tags">
+      <!-- EDIT THESE: your skills -->
+      <span class="tag">React</span>
+      <span class="tag">Netlify Functions</span>
+      <span class="tag">Notion API</span>
+      <span class="tag">AI Automation</span>
+      <span class="tag">Mobile-First Development</span>
+      <span class="tag">Linux / Termux</span>
+      <span class="tag">Google Cloud OAuth</span>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <p class="section-label">Projects</p>
+
+    <div class="projects-grid">
+
+      <!-- EDIT THESE: your projects. Copy/paste a .project-card block to add more -->
+
+      <a class="project-card" href="https://prioritytargetbreakdown.netlify.app" target="_blank">
+        <p class="project-name">Priority & Target Breakdown</p>
+        <p class="project-desc">A real-time operations dashboard that breaks quarterly goals into daily tasks, synced live to a Notion database.</p>
+        <div class="project-meta">
+          <span class="project-tag">React</span>
+          <span class="project-tag">Netlify</span>
+          <span class="project-tag">Notion API</span>
+        </div>
+      </a>
+
+      <a class="project-card" href="#" target="_blank">
+        <!-- EDIT THIS: replace # with your VelocityIQ Netlify URL -->
+        <p class="project-name">VelocityIQ</p>
+        <p class="project-desc">A team performance tracker with velocity scoring, trend charts, and automated weekly reporting.</p>
+        <div class="project-meta">
+          <span class="project-tag">React</span>
+          <span class="project-tag">Netlify</span>
+          <span class="project-tag">Dashboard</span>
+        </div>
+      </a>
+
+      <a class="project-card" href="#" target="_blank">
+        <!-- EDIT THIS: replace # with your Interview Coach URL -->
+        <p class="project-name">Interview Coach</p>
+        <p class="project-desc">An AI-powered interview prep tool with STAR-format answer generation, real-time scoring, and improvement directives.</p>
+        <div class="project-meta">
+          <span class="project-tag">React</span>
+          <span class="project-tag">Claude API</span>
+          <span class="project-tag">AI</span>
+        </div>
+      </a>
+
+      <a class="project-card" href="#" target="_blank">
+        <!-- EDIT THIS: replace # with your Booking Tool URL -->
+        <p class="project-name">Boutique Booking Tool</p>
+        <p class="project-desc">A warm, brand-matched client booking system with service selection, time slot picking, and confirmation flow.</p>
+        <div class="project-meta">
+          <span class="project-tag">React</span>
+          <span class="project-tag">Netlify</span>
+          <span class="project-tag">Mobile-First</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ARTICLES — auto-fetches from Medium RSS -->
+  <section id="articles">
+    <p class="section-label">Writing</p>
+    <div id="articles-list">
+      <p class="articles-loading">Loading articles...</p>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <p class="section-label">Contact</p>
+    <div class="contact-links">
+
+      <!-- EDIT THIS: your LinkedIn URL -->
+      <a class="contact-link" href="https://linkedin.com/in/azurazahra121" target="_blank">
+        <span class="contact-label">LinkedIn</span>
+        <span class="contact-value">linkedin.com/in/azurazahra121</span>
+      </a>
+
+      <!-- EDIT THIS: your Fiverr URL -->
+      <a class="contact-link" href="https://www.fiverr.com/azurazahra121" target="_blank">
+        <span class="contact-label">Fiverr</span>
+        <span class="contact-value">fiverr.com/azurazahra121</span>
+      </a>
+
+      <!-- EDIT THIS: your Medium URL -->
+      <a class="contact-link" href="https://medium.com/@azurazahra121" target="_blank">
+        <span class="contact-label">Medium</span>
+        <span class="contact-value">medium.com/@azurazahra121</span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    Built on Android. Deployed on GitHub Pages. &copy; 2026 Azura Zahra.
+  </footer>
+
+  <!-- MEDIUM RSS FETCH -->
+  <script>
+    // EDIT THIS: replace with your actual Medium username
+    const MEDIUM_USERNAME = 'azurazahra121';
+    const RSS_PROXY = `https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@${MEDIUM_USERNAME}`;
+
+    async function loadArticles() {
+      const container = document.getElementById('articles-list');
+      try {
+        const res = await fetch(RSS_PROXY);
+        const data = await res.json();
+        if (!data.items || data.items.length === 0) {
+          container.innerHTML = '<p class="articles-loading">No articles found.</p>';
+          return;
+        }
+        container.innerHTML = data.items.slice(0, 4).map(item => {
+          const date = new Date(item.pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+          return `
+            <a class="article-card" href="${item.link}" target="_blank" rel="noopener">
+              <p class="article-title">${item.title}</p>
+              <p class="article-date">${date}</p>
+            </a>
+          `;
+        }).join('');
+      } catch {
+        container.innerHTML = '<p class="articles-loading">Could not load articles. <a href="https://medium.com/@' + MEDIUM_USERNAME + '" target="_blank" style="color:var(--tan)">Read on Medium</a></p>';
+      }
+    }
+
+    loadArticles();
+  </script>
+
+</body>
+</html>
