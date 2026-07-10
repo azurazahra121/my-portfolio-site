@@ -572,21 +572,24 @@
           return;
         }
         container.innerHTML = data.items.slice(0, 4).map(item => {
-          const date = new Date(item.pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-          return `
-            <a class="article-card" href="${item.link}" target="_blank" rel="noopener">
-               <div class="project-overview">
-                 <div class="project-overview__image">
-                    <img src="${item.thumbnail}" alt="${item.title}">
-                 </div>
-                 <div class="project-overview__text">
-                 <p class="article-title">${item.title}</p>
-                 <p class="article-date">${date}</p>
-                 </div>
-               </div>
-            </a>
-          `;
-       }).join('');
+         const date = new Date(item.pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+         const imgMatch = item.content ? item.content.match(/<img[^>]+src="([^">]+)"/) : null;
+         const coverImg = item.thumbnail || (imgMatch ? imgMatch[1] : '');
+         const imageBlock = coverImg
+          ? `<div class="project-overview__image"><img src="${coverImg}" alt=""></div>`
+          : '';
+         return `
+          <a class="article-card" href="${item.link}" target="_blank" rel="noopener">
+           <div class="project-overview">
+             ${imageBlock}
+              <div class="project-overview__text">
+               <p class="article-title">${item.title}</p>
+               <p class="article-date">${date}</p>
+              </div>
+           </div>
+          </a>
+         `;
+        }).join('');
       } catch {
         container.innerHTML = '<p class="articles-loading">Could not load articles. <a href="https://medium.com/@' + MEDIUM_USERNAME + '" target="_blank" style="color:var(--tan)">Read on Medium</a></p>';
       }
